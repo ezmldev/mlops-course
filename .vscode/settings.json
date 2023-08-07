@@ -1,0 +1,42 @@
+{
+    "python.linting.mypyEnabled": true,
+    "python.formatting.provider": "none",
+    "black-formatter.logLevel": "warn",
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        },
+        "editor.formatOnType": true,
+    },
+    "isort.args": [
+        "--profile",
+        "black"
+    ],
+    "redhat.telemetry.enabled": false,
+    "editor.inlineSuggest.enabled": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "html.format.unformatted": "",
+    "black-formatter.importStrategy": "fromEnvironment",
+    "python.linting.mypyCategorySeverity.error": "Hint",
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    },
+    "github.copilot.enable": {
+        "*": true,
+        "yaml": true,
+        "plaintext": false,
+        "markdown": false
+    },
+    "python.linting.ignorePatterns": [
+        "tests/**/*.py"
+    ],
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.autoImportUserSymbols": true,
+    "python.analysis.inlayHints.functionReturnTypes": false,
+    "isort.check": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "jupyter.allowUnauthorizedRemoteConnection": true,
+}

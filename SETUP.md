@@ -1,8 +1,10 @@
 ```
-pip install mlflow jupyter[notebook] xgboost
+pip install mlflow jupyterlab xgboost
 
 mlflow server
-jupyter notebook
+# I've changed jupyter[notebook] to jupyterlab as jupyter[notebook] has gotten deprecated
+
+jupiter-lab
 
 ```
 
