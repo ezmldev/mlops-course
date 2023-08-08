@@ -1,3 +1,6 @@
+"""
+Dataset: http://archive.ics.uci.edu/dataset/380/youtube+spam+collection
+"""
 # %%
 """Create training dataset"""
 
@@ -26,7 +29,8 @@ df = pandas.DataFrame(data)
 from sklearn.feature_extraction.text import CountVectorizer
 
 vectorizer = CountVectorizer()
-X = vectorizer.fit_transform(df["content"])
+v_model = vectorizer.fit(df["content"])
+X = v_model.transform(df["content"])
 y = df["is_spam"]
 
 # %%
@@ -97,3 +101,28 @@ y_pred = best_model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 
 print(f"Accuracy of best model: {accuracy}")
+
+# %%
+from sklearn.pipeline import Pipeline
+
+pipe = Pipeline([("count_vectorizer", v_model), ("rf", best_model)])
+messages = [
+    "I love this video!",
+    "Come subscribe to my channel",
+    "If you want to see more videos like this, check out this video",
+    "This is the funniest video in the world!",
+]
+
+predictions = pipe.predict(messages)
+
+for t in zip(messages, predictions):
+    print(t)
+
+
+# %%
+import mlflow
+
+mlflow.set_experiment("youtube-spam")
+
+with mlflow.start_run():
+    mlflow.sklearn.log_model(pipe, "spam_model")
