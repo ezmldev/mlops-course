@@ -85,6 +85,13 @@ param_grid = {
     "min_samples_split": [2, 5, 10],  # 2
 }
 
+# DEV to make it faster
+param_grid = {
+    "n_estimators": [200],  # 200
+    "max_depth": [None, 10],  # None
+    "min_samples_split": [2],  # 2
+}
+
 # Create a Random Forest classifier
 rf = RandomForestClassifier(random_state=42)
 
@@ -105,7 +112,16 @@ print(f"Accuracy of best model: {accuracy}")
 # %%
 from sklearn.pipeline import Pipeline
 
-pipe = Pipeline([("count_vectorizer", v_model), ("rf", best_model)])
+from model_code.custom_identity_estimator import CustomIdentityEstimator
+
+pipe = Pipeline(
+    [
+        ("identity", CustomIdentityEstimator().fit()),
+        ("count_vectorizer", v_model),
+        ("rf", best_model),
+    ]
+)
+
 messages = [
     "I love this video!",
     "Come subscribe to my channel",
@@ -139,3 +155,25 @@ reloaded_model = mlflow.pyfunc.load_model(artifact_path)
 message = "Come subscribe to my channel"
 is_spam = reloaded_model.predict([message])
 print(message + " spam? " + str(bool(is_spam)))
+
+# %%
+import shutil
+
+shutil.rmtree(os.path.join(THIS_FOLDER, "model"), ignore_errors=True)
+
+code_dir = os.path.join(THIS_FOLDER, "model")
+pip_requirements = [
+    "numpy==1.24.4",
+    "pandas==1.5.3",
+    "scikit-learn==1.2.2",
+    "mlflow==2.5",
+]
+mlflow.sklearn.save_model(
+    best_model,
+    path=code_dir,
+    code_paths=[os.path.join(THIS_FOLDER, "model_code")],
+    pip_requirements=pip_requirements,
+)
+
+
+# %%
