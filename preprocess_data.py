@@ -124,5 +124,18 @@ import mlflow
 
 mlflow.set_experiment("youtube-spam")
 
-with mlflow.start_run():
-    mlflow.sklearn.log_model(pipe, "spam_model")
+with mlflow.start_run() as run:
+    model_info = mlflow.sklearn.log_model(pipe, "spam_model")
+
+print(model_info.artifact_path)
+# %%
+
+artifact_path = f"runs:/{run.info.run_id}/{model_info.artifact_path}"
+print(artifact_path)
+
+reloaded_model = mlflow.pyfunc.load_model(artifact_path)
+
+# %%
+message = "Come subscribe to my channel"
+is_spam = reloaded_model.predict([message])
+print(message + " spam? " + str(bool(is_spam)))
