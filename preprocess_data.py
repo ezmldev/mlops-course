@@ -4,6 +4,7 @@ Dataset: http://archive.ics.uci.edu/dataset/380/youtube+spam+collection
 # %%
 """Create training dataset"""
 
+import code
 import csv
 import glob
 import os
@@ -161,19 +162,22 @@ import shutil
 
 shutil.rmtree(os.path.join(THIS_FOLDER, "model"), ignore_errors=True)
 
-code_dir = os.path.join(THIS_FOLDER, "model")
+model_dir = os.path.join(THIS_FOLDER, "model")
 pip_requirements = [
     "numpy==1.24.4",
     "pandas==1.5.3",
     "scikit-learn==1.2.2",
     "mlflow==2.5",
 ]
+
 mlflow.sklearn.save_model(
     best_model,
-    path=code_dir,
+    path=model_dir,
     code_paths=[os.path.join(THIS_FOLDER, "model_code")],
     pip_requirements=pip_requirements,
 )
 
+m2 = mlflow.pyfunc.load_model(model_dir)
+m2.predict(["Hello"])
 
 # %%
