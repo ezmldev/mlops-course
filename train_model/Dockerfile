@@ -22,6 +22,7 @@ COPY model_code *.py /app/model_code
 COPY *.py /app/
 WORKDIR /app
 RUN python preprocess_data.py
+ENV MODEL_URI=file:/app/model/
 
 FROM busybox as model
 COPY --from=model-build /app/model /volume-data
