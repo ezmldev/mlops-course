@@ -22,7 +22,6 @@ COPY model_code *.py /app/model_code
 COPY *.py /app/
 WORKDIR /app
 RUN python preprocess_data.py
-ENV TMP=krumpli-v2
 
 FROM busybox as model
 COPY --from=model-build /app/model /volume-data
