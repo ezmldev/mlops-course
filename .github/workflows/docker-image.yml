@@ -49,9 +49,9 @@ jobs:
           context: ./train_model
           target: model-build
           cache-to: |
-            type=gha,mode=max
+            type=gha,mode=max,scope=${{ github.repository }}
           cache-from: |
-            type=gha
+            type=gha,scope=${{ github.repository }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
