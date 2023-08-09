@@ -1,0 +1,12 @@
+FROM python:alpine
+
+RUN apk add bash curl py3-scikit-learn py3-pandas py3-numpy py3-pyarrow py3-matplotlib
+ENV PYTHONPATH=/usr/lib/python3.11/site-packages/
+RUN pip install mlflow
+# cp -r ./mlruns/827003277591383190/89608b2de76040cbbc9d971ddd88d222/artifacts/spam_model  .
+
+#ADD spam_model /model
+VOLUME /model
+
+EXPOSE 5001
+CMD [ "mlflow", "models", "serve", "-p", "5001", "-h", "0.0.0.0", "-m", "file:/model/", "--no-conda" ]
