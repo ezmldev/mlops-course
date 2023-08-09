@@ -171,7 +171,7 @@ pip_requirements = [
 ]
 
 mlflow.sklearn.save_model(
-    best_model,
+    pipe,
     path=model_dir,
     code_paths=[os.path.join(THIS_FOLDER, "model_code")],
     pip_requirements=pip_requirements,
