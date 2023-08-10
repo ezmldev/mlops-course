@@ -6,6 +6,7 @@ Dataset: http://archive.ics.uci.edu/dataset/380/youtube+spam+collection
 
 import code
 import csv
+import datetime
 import glob
 import os
 
@@ -13,6 +14,8 @@ import pandas
 
 THIS_FOLDER = os.path.dirname(__file__)
 csv_files = glob.glob(os.path.join(THIS_FOLDER, "data", "*.csv"))
+print(__file__)
+
 # %%
 data = []
 
@@ -170,20 +173,51 @@ pip_requirements = [
     "mlflow==2.5",
 ]
 
-mlflow.sklearn.save_model(
-    pipe,
+
+class ModelWithPreprocess(mlflow.pyfunc.PythonModel):
+    def __init__(self, pipe_model):
+        self.model = pipe_model
+
+    def preprocess_input(self, payload):
+        if (
+            not isinstance(payload, dict)
+            or "data" not in payload
+            or not isinstance(payload["data"], str)
+        ):
+            raise TypeError(
+                "Request payload must be a dict in " + '{"data": "message"} format',
+            )
+        return payload["data"]
+
+    def predict(self, context, model_input):
+        processed_model_input = self.preprocess_input(model_input.copy())
+        # proba = self.model.predict_proba([processed_model_input][0])
+        prediction = self.model.predict([processed_model_input])[0]
+        # return {
+        #    "prediction": prediction,
+        #    "probability": float(proba[1]),
+        # }
+        return prediction
+
+
+model_w_preprocess = ModelWithPreprocess(pipe)
+
+mlflow.pyfunc.save_model(
     path=model_dir,
-    code_paths=[os.path.join(THIS_FOLDER, "model_code")],
+    python_model=model_w_preprocess,
+    code_path=[os.path.join(THIS_FOLDER, "model_code")],
     pip_requirements=pip_requirements,
     metadata={
         "model_type": "spam_classifier",
         "model_name": "spam_model",
         "model_version": "v1",
         "model_description": "Spam classifier trained on YouTube comments",
+        "trained_at": datetime.datetime.utcnow().isoformat(),
+        "accuracy": accuracy,
     },
 )
 
 m2 = mlflow.pyfunc.load_model(model_dir)
-m2.predict(["Hello"])
-
+print("Prediction: " + str(m2.predict({"data": "Come subscribe to my channel"})))
+print(m2.metadata.metadata)
 # %%

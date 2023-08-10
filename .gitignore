@@ -1,6 +1,7 @@
 mlartifacts/
 mlruns/
 /model
+/train_model/model
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -10,7 +10,11 @@ class MLService:
     def __init__(self, model):
         self.model = model
 
-        self.app = FastAPI()
+        self.app = FastAPI(
+            title=model.metadata._metadata["model_name"],
+            version=model.metadata._metadata["model_version"],
+            description=model.metadata._metadata["model_description"],
+        )
         self.app.add_middleware(
             CORSMiddleware,
             allow_origins=["*"],
@@ -19,23 +23,19 @@ class MLService:
             allow_headers=["*"],
         )
 
-        @self.app.get("/")
-        async def model_info():
+        @self.app.get("/metadata")
+        async def metadata():
             return self.model.metadata._metadata
 
         @self.app.post("/invocations/")
         async def invocations(payload: dict):
-            if (
-                not isinstance(payload, dict)
-                or "data" not in payload
-                or not isinstance(str, payload["data"])
-            ):
+            try:
+                return int(self.model.predict([payload["data"]])[0])
+            except Exception as e:
                 raise HTTPException(
                     status_code=400,
-                    detail="Request payload must be a dict in "
-                    + '{"data": "message"} format',
+                    detail=str(e),
                 )
-            return int(self.model.predict(payload["data"])[0])
 
 
 if __name__ == "__main__":
