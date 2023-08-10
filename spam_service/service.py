@@ -11,9 +11,9 @@ class MLService:
         self.model = model
 
         self.app = FastAPI(
-            title=model.metadata._metadata["model_name"],
-            version=model.metadata._metadata["model_version"],
-            description=model.metadata._metadata["model_description"],
+            title=model.metadata.metadata["model_name"],
+            version=model.metadata.metadata["model_version"],
+            description=model.metadata.metadata["model_description"],
         )
         self.app.add_middleware(
             CORSMiddleware,
