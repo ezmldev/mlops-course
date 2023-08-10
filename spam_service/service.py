@@ -2,13 +2,13 @@ import os
 
 import mlflow
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 
-class SpamService:
-    def __init__(self, spam_model):
-        self.spam_model = spam_model
+class MLService:
+    def __init__(self, model):
+        self.model = model
 
         self.app = FastAPI()
         self.app.add_middleware(
@@ -19,13 +19,27 @@ class SpamService:
             allow_headers=["*"],
         )
 
+        @self.app.get("/")
+        async def model_info():
+            return self.model.metadata._metadata
+
         @self.app.post("/invocations/")
-        async def root(payload: dict):
-            return int(self.spam_model.predict(payload["data"])[0])
+        async def invocations(payload: dict):
+            if (
+                not isinstance(payload, dict)
+                or "data" not in payload
+                or not isinstance(str, payload["data"])
+            ):
+                raise HTTPException(
+                    status_code=400,
+                    detail="Request payload must be a dict in "
+                    + '{"data": "message"} format',
+                )
+            return int(self.model.predict(payload["data"])[0])
 
 
 if __name__ == "__main__":
-    spam_model = mlflow.pyfunc.load_model(os.environ["MODEL_PATH"])
-    spam_service = SpamService(spam_model)
+    pyfunc_model = mlflow.pyfunc.load_model(os.environ["MODEL_PATH"])
+    ml_service = MLService(pyfunc_model)
 
-    uvicorn.run(spam_service.app, port=5000, log_level="info")
+    uvicorn.run(ml_service.app, port=5000, log_level="info")

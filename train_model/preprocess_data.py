@@ -110,10 +110,10 @@ accuracy = accuracy_score(y_test, y_pred)
 
 print(f"Accuracy of best model: {accuracy}")
 
+from model_code.custom_identity_estimator import CustomIdentityEstimator
+
 # %%
 from sklearn.pipeline import Pipeline
-
-from model_code.custom_identity_estimator import CustomIdentityEstimator
 
 pipe = Pipeline(
     [
@@ -175,6 +175,12 @@ mlflow.sklearn.save_model(
     path=model_dir,
     code_paths=[os.path.join(THIS_FOLDER, "model_code")],
     pip_requirements=pip_requirements,
+    metadata={
+        "model_type": "spam_classifier",
+        "model_name": "spam_model",
+        "model_version": "v1",
+        "model_description": "Spam classifier trained on YouTube comments",
+    },
 )
 
 m2 = mlflow.pyfunc.load_model(model_dir)
