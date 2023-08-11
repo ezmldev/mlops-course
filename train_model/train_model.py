@@ -9,18 +9,21 @@ import shutil
 
 import mlflow
 import pandas
-from model_code.custom_identity_estimator import CustomIdentityEstimator
-from model_code.model_with_preprocess import ModelWithPreprocess
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.pipeline import Pipeline
 
+from model_code.custom_identity_estimator import CustomIdentityEstimator
+from model_code.model_with_preprocess import ModelWithPreprocess
+
 logging.root.setLevel(logging.INFO)
 
-THIS_FOLDER = os.path.dirname(__file__)
-csv_files = glob.glob(os.path.join(THIS_FOLDER, "data", "*.csv"))
+THIS_DIR = os.path.dirname(__file__)
+PROJECT_ROOT_DIR = os.path.dirname(THIS_DIR)
+
+csv_files = glob.glob(os.path.join(THIS_DIR, "data", "*.csv"))
 
 data = []
 for f in csv_files:
@@ -78,8 +81,11 @@ pipe = Pipeline(
     ]
 )
 
-model_dir = os.path.join(THIS_FOLDER, "model")
-shutil.rmtree(model_dir, ignore_errors=True)
+if "MODEL_PATH" in os.environ:
+    model_path = os.environ["MODEL_PATH"]
+else:
+    model_path = os.path.join(PROJECT_ROOT_DIR, "models")
+shutil.rmtree(model_path, ignore_errors=True)
 
 pip_requirements = [
     "numpy==1.24.4",
@@ -92,9 +98,9 @@ pip_requirements = [
 model_w_preprocess = ModelWithPreprocess(pipe)
 
 mlflow.pyfunc.save_model(
-    path=model_dir,
+    path=model_path,
     python_model=model_w_preprocess,
-    code_path=[os.path.join(THIS_FOLDER, "model_code")],
+    code_path=[os.path.join(THIS_DIR, "model_code")],
     pip_requirements=pip_requirements,
     metadata={
         "model_type": "Random Forest",
@@ -106,4 +112,4 @@ mlflow.pyfunc.save_model(
     },
 )
 
-logging.info(f"Model saved to {model_dir}")
+logging.info(f"Model saved to {model_path}")

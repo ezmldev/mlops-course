@@ -5,6 +5,9 @@ import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
+THIS_DIR = os.path.dirname(__file__)
+PROJECT_ROOT_DIR = os.path.dirname(THIS_DIR)
+
 
 class MLService:
     def __init__(self, model):
