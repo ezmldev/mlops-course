@@ -23,7 +23,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/${{ github.repository_owner }}/mlflow-spam
+            ghcr.io/${{ github.repository_owner }}/spam-api
           tags: |
             type=edge,branch=master
             type=sha,enable=true,prefix=git-,format=short
@@ -43,11 +43,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
       -
-        name: Build and push
+        name: Build and push fastapi
         uses: docker/build-push-action@v4
         with:
-          context: ./train_model
-          target: model-build
+          context: ./spam_service
           cache-to: |
             type=gha,mode=max,scope=${{ github.repository }}
           cache-from: |
@@ -57,7 +56,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
       -
-        name: Docker meta
+        name: Docker meta (model)
         id: meta-model
         uses: docker/metadata-action@v4
         with:
