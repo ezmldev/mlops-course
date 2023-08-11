@@ -10,7 +10,7 @@ run-volume: build volume
 	docker run -d -p 5001:5001 -v model:/model ttl.sh/mlflow
 
 run-embedded: build
-	docker run -d -p 5001:5001 -e MODEL_URI=file:/app/model/ ttl.sh/mlflow-spam
+	docker run -d -p 5001:5001 -e MLFLOW_MODEL_URI=file:/app/model/ ttl.sh/mlflow-spam
 
 test:
 	curl   -H "content-type: application/json"   localhost:5001/invocations   -d '{"inputs": ["subscribe my channel","this was great"]}'

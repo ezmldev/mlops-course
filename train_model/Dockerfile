@@ -12,7 +12,7 @@ COPY start.sh /
 RUN chmod 755 /start.sh
 
 VOLUME /model
-ENV MODEL_URI=file:/model/
+ENV MLFLOW_MODEL_URI=file:/model/
 EXPOSE 5001
 CMD [ "/start.sh" ]
 
@@ -22,7 +22,7 @@ COPY model_code *.py /app/model_code
 COPY *.py /app/
 WORKDIR /app
 RUN python preprocess_data.py
-ENV MODEL_URI=file:/app/model/
+ENV MLFLOW_MODEL_URI=file:/app/model/
 
 FROM busybox as model
 COPY --from=model-build /app/model /volume-data
