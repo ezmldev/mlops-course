@@ -4,10 +4,6 @@ RUN apk add bash curl py3-scikit-learn py3-pandas py3-numpy py3-pyarrow py3-matp
 ENV PYTHONPATH=/usr/lib/python3.11/site-packages/
 RUN pip install mlflow
 
-
-# cp -r ./mlruns/827003277591383190/89608b2de76040cbbc9d971ddd88d222/artifacts/spam_model  .
-#ADD spam_model /model
-
 COPY start.sh /
 RUN chmod 755 /start.sh
 
@@ -21,7 +17,8 @@ COPY data /app/data
 COPY model_code *.py /app/model_code
 COPY *.py /app/
 WORKDIR /app
-RUN python preprocess_data.py
+ENV MODEL_PATH=/app/model
+RUN python train_model.py
 ENV MLFLOW_MODEL_URI=file:/app/model/
 
 FROM busybox as model
