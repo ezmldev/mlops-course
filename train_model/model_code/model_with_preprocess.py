@@ -12,12 +12,11 @@ class ModelWithPreprocess(mlflow.pyfunc.PythonModel):
         if (
             not isinstance(payload, dict)
             or "data" not in payload
-            or not isinstance(payload["data"], str)
         ):
             raise TypeError(
                 "Request payload must be a dict in " + '{"data": "message"} format',
             )
-        return payload["data"]
+        return str(payload["data"])
 
     def predict(
         self, context: mlflow.pyfunc.PythonModelContext, model_input: dict[str, Any]
