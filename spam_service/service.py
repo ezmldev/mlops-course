@@ -33,7 +33,8 @@ class MLService:
         @self.app.post("/invocations/")
         async def invocations(payload: dict):
             try:
-                return int(self.model.predict([payload["data"]])[0])
+                print(payload)
+                return int(self.model.predict(payload))
             except Exception as e:
                 raise HTTPException(
                     status_code=400,
@@ -45,4 +46,4 @@ if __name__ == "__main__":
     pyfunc_model = mlflow.pyfunc.load_model(os.environ["MODEL_PATH"])
     ml_service = MLService(pyfunc_model)
 
-    uvicorn.run(ml_service.app, port=5000, log_level="info")
+    uvicorn.run(ml_service.app, host="0.0.0.0", port=5000, log_level="info")
