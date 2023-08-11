@@ -1,7 +1,8 @@
 build:
 	docker build --target mlflow  -t ttl.sh/mlflow -t ghcr.io/lalyos/mlflow .
-	docker build --target model-build  -t ttl.sh/mlflow-spam -t ghcr.io/lalyos/mlflow-spam .
-	docker build -t ttl.sh/spam-model -t ghcr.io/lalyos/spam-model .
+	docker build --target model-build  -t ttl.sh/mlflow-spam -t ghcr.io/$${GITHUB_REPOSITORY%/*}/mlflow-spam .
+	docker build -t ttl.sh/spam-model -t ghcr.io/$${GITHUB_REPOSITORY%/*}/spam-model .
+
 
 volume:
 	docker run -v model:/model --rm ttl.sh/spam-model sh -c 'cp -r /volume-data/* /model'
