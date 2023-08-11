@@ -1,6 +1,6 @@
 ARG MODEL_IMG=ghcr.io/zoltanctoth/spam-model
 
-FROM ghcr.io/zoltanctoth/mlflow AS serving-api
+FROM ghcr.io/ezmlops/mlflow:v1.0 AS serving-api
 COPY requirements.txt /app/
 WORKDIR /app
 RUN pip install -r requirements.txt
