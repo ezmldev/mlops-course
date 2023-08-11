@@ -1,12 +1,11 @@
-import imp
 from typing import Any
 
 import mlflow
-import sklearn
+from sklearn.pipeline import Pipeline
 
 
 class ModelWithPreprocess(mlflow.pyfunc.PythonModel):
-    def __init__(self, pipe_model: sklearn.pipeline.Pipeline) -> None:
+    def __init__(self, pipe_model: Pipeline) -> None:
         self.model = pipe_model
 
     def preprocess_input(self, payload: dict) -> str:
