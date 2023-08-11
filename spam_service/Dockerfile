@@ -1,4 +1,4 @@
-FROM ttl.sh/mlflow
+FROM ghcr.io/zoltanctoth/mlflow
 COPY requirements.txt /app/
 WORKDIR /app
 RUN pip install -r requirements.txt
