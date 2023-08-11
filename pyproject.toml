@@ -22,7 +22,3 @@ warn_unused_ignores = true # Warns about unused '# type: ignore' comments.
 ignore_missing_imports = true # Ignores imports that are missing a type annotation.
 ignore_missing_imports_per_module = true # This is a workaround for https://github.com/python/mypy/issues/10709
 strict_equality = true # Disallows comparing an expression of type Any to a literal, as this is often a bug.
-
-[build-system]
-requires = ["setuptools>=42", "wheel"]   # PEP 508 specifications.
-build-backend = "setuptools.build_meta"
