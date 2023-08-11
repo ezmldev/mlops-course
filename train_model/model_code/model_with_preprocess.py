@@ -1,8 +1,12 @@
+import imp
+from typing import Any
+
 import mlflow
+import sklearn
 
 
 class ModelWithPreprocess(mlflow.pyfunc.PythonModel):
-    def __init__(self, pipe_model):
+    def __init__(self, pipe_model: sklearn.pipeline.Pipeline) -> None:
         self.model = pipe_model
 
     def preprocess_input(self, payload: dict) -> str:
@@ -16,7 +20,9 @@ class ModelWithPreprocess(mlflow.pyfunc.PythonModel):
             )
         return payload["data"]
 
-    def predict(self, context, model_input: str) -> int:
+    def predict(
+        self, context: mlflow.pyfunc.PythonModelContext, model_input: dict[str, Any]
+    ) -> int:
         processed_model_input = self.preprocess_input(model_input.copy())
-        prediction = self.model.predict([processed_model_input])[0]
+        prediction = int(self.model.predict([processed_model_input])[0])
         return prediction
