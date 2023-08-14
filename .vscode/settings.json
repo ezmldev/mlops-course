@@ -39,4 +39,9 @@
     "isort.check": true,
     "python.analysis.typeCheckingMode": "basic",
     "jupyter.allowUnauthorizedRemoteConnection": true,
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
 }

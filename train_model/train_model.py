@@ -104,9 +104,9 @@ mlflow.pyfunc.save_model(
     pip_requirements=pip_requirements,
     metadata={
         "model_type": "Random Forest",
-        "model_name": "spam_model",
+        "model_name": "spam_classifier",
         "model_description": "Spam classifier trained on YouTube comments",
-        "model_version": "v1",
+        "model_version": "1.0.0",
         "trained_at": datetime.datetime.utcnow().isoformat(),
         "accuracy": str(accuracy),
     },
