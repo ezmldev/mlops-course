@@ -64,3 +64,31 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta-model.outputs.tags }}
           labels: ${{ steps.meta-model.outputs.labels }}
+      -
+        name: Docker meta (serving-with-model)
+        id: meta-model-serving
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            ghcr.io/${{ github.repository_owner }}/serving-spam
+          tags: |
+            type=edge,branch=master
+            type=sha,enable=true,prefix=git-,format=short
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern=v{{version}}
+            type=semver,pattern=v{{major}}.{{minor}}
+            type=semver,pattern=v{{major}}
+      -
+        name: Build and push (serving-with-model)
+        uses: docker/build-push-action@v4
+        with:
+          context: ./train_model
+          target: serving-with-model
+          cache-to: |
+            type=gha,mode=max,scope=${{ github.repository }}
+          cache-from: |
+            type=gha,scope=${{ github.repository }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta-model-serving.outputs.tags }}
+          labels: ${{ steps.meta-model-serving.outputs.labels }}
