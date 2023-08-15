@@ -1,4 +1,4 @@
-FROM ghcr.io/ezmlops/mlflow:v1.0 as model-build
+FROM ghcr.io/ezmldev/mlflow:v1.0 as model-build
 COPY data /app/data
 COPY model_code *.py /app/model_code/
 COPY *.py /app/

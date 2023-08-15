@@ -7,7 +7,7 @@ volume:
 	docker run -v model:/model --rm ttl.sh/spam-model sh -c 'cp -r /volume-data/* /model'
 
 run-volume: build volume
-	docker run -d -p 5000:5000 -v model:/model ghcr.io/ezmlops/mlflow:v1.0
+	docker run -d -p 5000:5000 -v model:/model ghcr.io/ezmldev/mlflow:v1.0
 
 run-embedded: build
 	docker run -d -p 5000:5000 ttl.sh/mlflow-spam
