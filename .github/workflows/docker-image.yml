@@ -42,6 +42,16 @@ jobs:
             type=semver,pattern=v{{major}}.{{minor}}
             type=semver,pattern=v{{major}}
       -
+        name: Build and test (model)
+        uses: docker/build-push-action@v4
+        with:
+          context: ./train_model
+          target: test
+          cache-to: |
+            type=gha,mode=max,scope=${{ github.repository }}
+          cache-from: |
+            type=gha,scope=${{ github.repository }}
+      -
         name: Build and push (model)
         uses: docker/build-push-action@v4
         with:
@@ -54,4 +64,3 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta-model.outputs.tags }}
           labels: ${{ steps.meta-model.outputs.labels }}
-    
