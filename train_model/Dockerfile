@@ -12,8 +12,9 @@ COPY tests /app/tests
 RUN apk add py3-pytest-asyncio-pyc
 RUN python -m pytest -v
 
-FROM ghcr.io/ezmldev/model-serving:v1.0 as serving-with-model
+FROM ghcr.io/ezmldev/serving-api:v1.0 as serving-with-model
 COPY --from=model-build /app/model /app/model
+ENV MODEL_PATH=/app/model
 
 FROM busybox as model
 COPY --from=model-build /app/model /volume-data
