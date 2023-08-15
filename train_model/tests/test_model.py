@@ -8,7 +8,7 @@ PROJECT_ROOT_DIR = os.path.dirname(os.path.dirname(__file__))
 
 @pytest.fixture(scope="session")
 def model():
-    return mlflow.pyfunc.load_model(os.path.join(PROJECT_ROOT_DIR, "models"))
+    return mlflow.pyfunc.load_model(os.environ["MODEL_PATH"])
 
 
 def test_predictions(model):

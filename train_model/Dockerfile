@@ -7,5 +7,10 @@ ENV MODEL_PATH=/app/model
 RUN python train_model.py
 ENV MLFLOW_MODEL_URI=file:/app/model/
 
+FROM model-build as test
+COPY tests /app/tests
+RUN apk add py3-pytest-asyncio-pyc
+RUN python -m pytest -v
+
 FROM busybox as model
 COPY --from=model-build /app/model /volume-data
