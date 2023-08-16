@@ -1,0 +1,31 @@
+name: k8s deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      serving_image_tag:
+        description: docker image tag of ezserving-spam
+        default: v1.0.0
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Install kubectl
+      uses: alexellis/arkade-get@master
+      with:
+        kubectl: v1.25.0
+        helm: latest
+    - name: Kubectl apply
+      env:
+        SERVING_IMAGE_TAG: ${{ github.event.inputs.serving_image_tag }}
+      run: |
+        kubectl config set-cluster codespace --server https://${{ vars.CODESPACE_NAME }}-6443.app.github.dev/ --insecure-skip-tls-verify 
+        kubectl config set-credentials boss --token ${{ vars.BOSS_TOKEN }}
+        kubectl config set-context codespace --cluster codespace --user boss --namespace default
+        kubectl config use-context codespace
+        cat deploy/crd/full.yaml |envsubst| kubectl apply -f -
