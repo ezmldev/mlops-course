@@ -32,9 +32,10 @@ curl \
 ## deploy with helm
 
 ```
+helm repo add onechart https://chart.onechart.dev
+
 helm upgrade -i \
-  spam onechart \
-  --repo https://chart.onechart.dev \
+  spam onechart/onechart \
   --values spam-values.yaml 
 
 helm upgrade -i \
