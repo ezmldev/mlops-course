@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: spam
+  name: spam
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spam
+  template:
+    metadata:
+      labels:
+        app: spam
+    spec:
+      containers:
+      - image: ghcr.io/ezmldev/ezserving-spam:v1.0
+        name: spam
+        ports:
+        - containerPort: 5000

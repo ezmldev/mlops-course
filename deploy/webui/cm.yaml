@@ -1,0 +1,30 @@
+apiVersion: v1
+data:
+  index.html: |-
+    <h2>Spam Model v1</h2>
+
+    <input id=input type=textarea size=60 value="this video was rad"/>
+    <button onclick="check()">Check</button>
+
+    <hr/>
+    <h3>
+    Result
+    </h3>
+    <input id=result type=textarea size=60 value="todo ..."/>
+
+    <script>
+    function check() {
+      const xhttp = new XMLHttpRequest();
+
+      xhttp.open("POST", "//spam.lvh.me:" + window.location.port + "/invocations/", false);
+      xhttp.setRequestHeader("Content-type", "application/json");  
+      xhttp.send(JSON.stringify(
+        { "data": [document.getElementById("input").value] }
+      ));
+      document.getElementById("result").value = xhttp.responseText;
+    }
+    </script>
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: index

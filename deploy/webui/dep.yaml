@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: webui
+  name: webui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webui
+  template:
+    metadata:
+      labels:
+        app: webui
+    spec:
+      volumes:
+        - name: htmlvol
+          configMap:
+            name: index
+      containers:
+      - image: nginx:alpine
+        name: nginx
+        volumeMounts:
+          - name: htmlvol
+            mountPath: /usr/share/nginx/html/
+        ports:
+        - containerPort: 80
+        resources: {}
+        
