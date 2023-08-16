@@ -36,10 +36,24 @@ helm repo add onechart https://chart.onechart.dev
 
 helm upgrade -i \
   spam onechart/onechart \
-  --values spam-values.yaml 
+  --values deploy/helm/dev/spam-values.yaml 
 
 helm upgrade -i \
   web  \
   onechart/static-site \
-  --values web-values.yaml
+  --values deploy/helm/dev/web-values.yaml
+```
+
+## prompt
+
+show k8s context/ns in prompt
+```
+export PS1_OLD=$PS1
+kp() { kubectl config view --minify -o json | jq '"\(.contexts[0].name)/\(.contexts[0].context.namespace)"' -r ; }
+export PS1='$(kp) $ '
+```
+
+reset prompt
+```
+export PS1=$PS1_OLD
 ```

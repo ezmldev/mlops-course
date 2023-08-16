@@ -1,0 +1,6 @@
+image:
+  repository: ghcr.io/ezmldev/ezserving-spam
+  tag: v1.0
+containerPort: 5000
+ingress:
+  host: spam.k3z.eu

@@ -1,0 +1,25 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: spam
+spec:
+  chart: https://chart.onechart.dev/onechart-0.52.0.tgz
+  valuesContent: |-
+    image:
+      repository: ghcr.io/ezmldev/ezserving-spam
+      tag: v1.0
+    containerPort: 5000
+    ingress:
+      host: spam.lvh.me
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: web
+spec:
+  chart: https://chart.onechart.dev/static-site-0.52.0.tgz
+  valuesContent: |-
+    gitCloneUrl: https://github.com/ezmldev/mlops-course.git
+    builtAssets: web/
+    ingress:
+      host: web.lvh.me
