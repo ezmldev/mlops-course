@@ -16,7 +16,7 @@ data:
     function check() {
       const xhttp = new XMLHttpRequest();
 
-      xhttp.open("POST", "//spam.lvh.me:" + window.location.port + "/invocations/", false);
+      xhttp.open("POST", "//spam." + window.location.hostname.split('.').slice(1).join('.') + ":" + window.location.port + "/invocations/", false);
       xhttp.setRequestHeader("Content-type", "application/json");  
       xhttp.send(JSON.stringify(
         { "data": [document.getElementById("input").value] }
