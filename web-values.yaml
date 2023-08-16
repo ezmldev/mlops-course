@@ -1,0 +1,6 @@
+# helm upgrade -i web  onechart/static-site --values
+
+gitCloneUrl: https://github.com/ezmldev/mlops-course.git
+builtAssets: web/
+ingress:
+  host: web.lvh.me

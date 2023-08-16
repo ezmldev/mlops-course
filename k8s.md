@@ -36,4 +36,9 @@ helm upgrade -i \
   spam onechart \
   --repo https://chart.onechart.dev \
   --values spam-values.yaml 
+
+helm upgrade -i \
+  web  \
+  onechart/static-site \
+  --values web-values.yaml
 ```
