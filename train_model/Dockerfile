@@ -1,4 +1,4 @@
-FROM ghcr.io/ezmldev/mlflow:v1.0 as model-build
+FROM ghcr.io/ezmldev/mlflow:v2.6.0 as model-build
 COPY data /app/data
 COPY model_code *.py /app/model_code/
 COPY *.py /app/
@@ -12,7 +12,7 @@ COPY tests /app/tests
 RUN apk add py3-pytest-asyncio-pyc
 RUN python -m pytest -v
 
-FROM ghcr.io/ezmldev/serving-api:v1.0 as serving-with-model
+FROM ghcr.io/ezmldev/serving-api:v2.6.0 as serving-with-model
 COPY --from=model-build /app/model /app/model
 ENV MODEL_PATH=/app/model
 
