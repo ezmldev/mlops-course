@@ -84,6 +84,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./train_model
+          platforms: linux/amd64,linux/arm/v8
           target: serving-with-model
           cache-to: |
             type=gha,mode=max,scope=${{ github.repository }}
