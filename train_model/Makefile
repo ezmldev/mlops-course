@@ -1,16 +1,17 @@
+GITHUB_REPOSITORY_OWNER ?= ezmldev
 build:
-	docker build -t ghcr.io/$${GITHUB_REPOSITORY%/*}/ezmodel-spam .
-	docker build --target serving-with-model  -t ghcr.io/$${GITHUB_REPOSITORY%/*}/ezserving-spam .
+	docker build -t ghcr.io/$(GITHUB_REPOSITORY_OWNER)/ezmodel-spam .
+	docker build --target serving-with-model  -t ghcr.io/$(GITHUB_REPOSITORY_OWNER)/ezserving-spam .
 
 volume:
 	docker volume rm model 2>/dev/null || true
-	docker run -v model:/model --rm ghcr.io/$${GITHUB_REPOSITORY%/*}/ezmodel-spam sh -c 'cp -r /volume-data/* /model'
+	docker run -v model:/model --rm ghcr.io/$(GITHUB_REPOSITORY_OWNER)/ezmodel-spam sh -c 'cp -r /volume-data/* /model'
 
 run-volume: build volume
 	docker run -d -p 5000:5000 -v model:/model ghcr.io/ezmldev/serving-api:v1.0
 
 run-embedded: build
-	docker run -d -p 5000:5000 ghcr.io/$${GITHUB_REPOSITORY%/*}/ezserving-spam
+	docker run -d -p 5000:5000 ghcr.io/$(GITHUB_REPOSITORY_OWNER)/ezserving-spam
 
 test:
 	curl   -H "content-type: application/json"   localhost:5000/invocations/   -d '{"data": "subscribe my channel"}'
