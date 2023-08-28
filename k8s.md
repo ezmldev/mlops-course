@@ -18,7 +18,7 @@ complete -o default -F __start_kubectl k
 ## deploy serving api and web ui - kubectl
 
 ```
-kubectl apply -f deploy/kubectl/ --recursive
+kubectl apply -k deploy/kubectl
 ```
 
 testing locally

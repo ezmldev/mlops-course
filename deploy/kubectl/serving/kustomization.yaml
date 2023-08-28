@@ -1,0 +1,5 @@
+
+resources:
+  - dep.yaml
+  - svc.yaml
+  - ing.yaml

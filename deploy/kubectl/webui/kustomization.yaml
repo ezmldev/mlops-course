@@ -1,0 +1,10 @@
+
+resources:
+  - dep.yaml
+  - svc.yaml
+  - ing.yaml
+
+configMapGenerator:
+  - name: index
+    files:
+      - index.html
