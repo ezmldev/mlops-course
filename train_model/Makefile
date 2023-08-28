@@ -11,10 +11,11 @@ run-volume: build volume
 	docker run -d -p 5000:5000 -v model:/model ghcr.io/ezmldev/serving-api:v1.1
 
 run-embedded: build
-	docker run -d -p 5000:5000 ghcr.io/$(GITHUB_REPOSITORY_OWNER)/ezserving-spam
+	docker rm -f spam &>/dev/null || true
+	docker run --name spam -d -p 5000:5000 ghcr.io/$(GITHUB_REPOSITORY_OWNER)/ezserving-spam
 
 test:
-	curl   -H "content-type: application/json"   localhost:5000/invocations/   -d '{"data": "subscribe my channel"}'
+	curl -H "content-type: application/json"   localhost:5000/invocations/   -d '{"data": "subscribe my channel"}'
 
 clean:
 	docker rm -f $(shell docker ps -qa) || true
