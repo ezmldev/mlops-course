@@ -24,6 +24,6 @@ spec:
   createNamespace: true
   valuesContent: |-
     gitCloneUrl: https://github.com/ezmldev/mlops-course.git
-    builtAssets: web/
+    builtAssets: deploy/kubectl/webui/
     ingress:
       host: web.lvh.me
