@@ -1,20 +1,35 @@
-<h2>Spam Model v1</h2>
-
+<h2>Model:<spam id="model"></spam></h2>
+<h3>version: <span id="version"></span></h3>
 <input id=input type=textarea size=60 value="this video was rad"/>
 <button onclick="check()">Check</button>
 
 <hr/>
-<h3>
-Result
-</h3>
+<h3>Result</h3>
 <input id=result type=textarea size=60 value="todo ..."/>
 
+<hr/>
+<h3>Full Metadata</h3>
+<pre id="meta">
+</pre>
 <script>
 baseurl = window.location.protocol + "//spam." + window.location.hostname.split('.').slice(1).join('.') + ":" + window.location.port;
 if (window.location.protocol == "file:") {
   baseurl = "http://127.0.0.1:5000"
 }
 console.log("baseurl:", baseurl)
+
+function meta() {
+  const xhttp = new XMLHttpRequest();
+
+  xhttp.open("GET", baseurl + "/metadata", false);
+  xhttp.send();
+  meta = JSON.parse(xhttp.responseText)
+  document.getElementById("meta").innerText = JSON.stringify(meta, null, 2);
+  document.getElementById("model").innerText = meta.model_description
+  document.getElementById("version").innerText = meta.model_version
+}
+meta()
+
 function check() {
   const xhttp = new XMLHttpRequest();
 
