@@ -10,10 +10,15 @@ Result
 <input id=result type=textarea size=60 value="todo ..."/>
 
 <script>
+baseurl = window.location.protocol + "//spam." + window.location.hostname.split('.').slice(1).join('.') + ":" + window.location.port;
+if (window.location.protocol == "file:") {
+  baseurl = "http://127.0.0.1:5000"
+}
+console.log("baseurl:", baseurl)
 function check() {
   const xhttp = new XMLHttpRequest();
 
-  xhttp.open("POST", "//spam." + window.location.hostname.split('.').slice(1).join('.') + ":" + window.location.port + "/invocations/", false);
+  xhttp.open("POST", baseurl + "/invocations/", false);
   xhttp.setRequestHeader("Content-type", "application/json");  
   xhttp.send(JSON.stringify(
     { "data": [document.getElementById("input").value] }
