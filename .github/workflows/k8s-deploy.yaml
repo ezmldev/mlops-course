@@ -5,7 +5,7 @@ on:
     inputs:
       serving_image_tag:
         description: docker image tag of ezserving-spam
-        default: v1.0.0
+        default: v1.1
         required: true
 
 jobs:

@@ -15,7 +15,7 @@ spec:
         app: spam
     spec:
       containers:
-      - image: ghcr.io/ezmldev/ezserving-spam:v1.0
+      - image: ghcr.io/ezmldev/ezserving-spam:v1.1
         name: spam
         ports:
         - containerPort: 5000
