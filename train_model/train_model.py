@@ -23,14 +23,14 @@ logging.root.setLevel(logging.INFO)
 THIS_DIR = os.path.dirname(__file__)
 PROJECT_ROOT_DIR = os.path.dirname(THIS_DIR)
 
-csv_files = glob.glob(os.path.join(THIS_DIR, "data", "*.csv"))
+csv_files = glob.glob(os.path.join(THIS_DIR, "..", "training_data", "*.csv"))
 
 data = []
 for f in csv_files:
     with open(f, newline="") as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            data.append({"content": row["CONTENT"], "is_spam": row["CLASS"]})
+            data.append({"content": row["content"], "is_spam": row["is_spam"]})
 
 logging.info(f"Training model on {len(data)} rows")
 
@@ -97,7 +97,7 @@ pip_requirements = [
 
 model_w_preprocess = ModelWithPreprocess(pipe)
 
-mlflow.pyfunc.save_model(
+mlflow.pyfunc.log_model(
     path=model_path,
     python_model=model_w_preprocess,
     code_path=[os.path.join(THIS_DIR, "model_code")],
