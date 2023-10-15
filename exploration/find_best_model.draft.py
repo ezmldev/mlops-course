@@ -1,36 +1,24 @@
-"""
-Dataset: http://archive.ics.uci.edu/dataset/380/youtube+spam+collection
-"""
 # %%
 """Create training dataset"""
 
-import code
 import csv
 import datetime
 import glob
 import os
+from pathlib import Path
 
-import pandas
-
-THIS_FOLDER = os.path.dirname(__file__)
-csv_files = glob.glob(os.path.join(THIS_FOLDER, "data", "*.csv"))
-print(__file__)
-
-# %%
-data = []
-
-for f in csv_files:
-    with open(f, newline="") as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            data.append({"content": row["CONTENT"], "is_spam": row["CLASS"]})
-
-print(f"Total {len(data)} rows")
-# %%
-
-df = pandas.DataFrame(data)
-
+import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import MultinomialNB
+
+data_files_dir = Path.cwd().parent / "data"
+df = pd.read_csv(data_files_dir / "comments.csv")
+
+print(f"Read total {len(df)} rows")
+df.head(2)
+# %%
 
 vectorizer = CountVectorizer()
 v_model = vectorizer.fit(df["content"])
@@ -38,18 +26,15 @@ X = v_model.transform(df["content"])
 y = df["is_spam"]
 
 # %%
-from sklearn.model_selection import train_test_split
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
+
 # %%
-from sklearn.naive_bayes import MultinomialNB
 
 classifier = MultinomialNB()
 classifier.fit(X_train, y_train)
-
-from sklearn.metrics import accuracy_score
 
 y_pred = classifier.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
@@ -113,31 +98,7 @@ accuracy = accuracy_score(y_test, y_pred)
 
 print(f"Accuracy of best model: {accuracy}")
 
-from model_code.custom_identity_estimator import CustomIdentityEstimator
-
 # %%
-from sklearn.pipeline import Pipeline
-
-pipe = Pipeline(
-    [
-        ("identity", CustomIdentityEstimator().fit()),
-        ("count_vectorizer", v_model),
-        ("rf", best_model),
-    ]
-)
-
-messages = [
-    "I love this video!",
-    "Come subscribe to my channel",
-    "If you want to see more videos like this, check out this video",
-    "This is the funniest video in the world!",
-]
-
-predictions = pipe.predict(messages)
-
-for t in zip(messages, predictions):
-    print(t)
-
 
 # %%
 import mlflow
