@@ -1,3 +1,4 @@
 mlflow >=2.7, <2.8
 ipykernel
 isort>=5.12, <5.13
+imgcat=0.5.0

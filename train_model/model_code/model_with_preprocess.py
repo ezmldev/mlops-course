@@ -9,10 +9,7 @@ class ModelWithPreprocess(mlflow.pyfunc.PythonModel):
         self.model = pipe_model
 
     def preprocess_input(self, payload: dict) -> str:
-        if (
-            not isinstance(payload, dict)
-            or "data" not in payload
-        ):
+        if not isinstance(payload, dict) or "data" not in payload:
             raise TypeError(
                 "Request payload must be a dict in " + '{"data": "message"} format',
             )
