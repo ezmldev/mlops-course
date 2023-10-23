@@ -2,7 +2,7 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 echo "Starting MLflow server on port 5000"
-echo Once Visual Studio Code is running, open a browser to http://localhost:5000 by clicking the following link:
+echo Once MLflow is running, open a browser to http://localhost:5000 by clicking the popup in the lower right corner of VSCode:
 imgcat "${SCRIPT_DIR}/course_helpers/images/mlflow_open_port.png"
 
 mlflow server \

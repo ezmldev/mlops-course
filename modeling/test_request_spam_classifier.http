@@ -1,0 +1,9 @@
+POST http://localhost:5999/invocations HTTP/1.1
+content-type: application/json
+
+{
+    "dataframe_split": {
+        "columns": ["content"],
+        "data": [["Subscribe to my channel!"], ["Subscribe to my channel!"]]
+    }
+}

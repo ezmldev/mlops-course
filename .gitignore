@@ -1,6 +1,7 @@
 mlartifacts/
 mlruns/
-/models
+/models/
+.mlflow_data/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
