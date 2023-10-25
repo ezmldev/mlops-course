@@ -4,6 +4,6 @@ content-type: application/json
 {
     "dataframe_split": {
         "columns": ["content"],
-        "data": [["Subscribe to my channel!"], ["Subscribe to my channel!"]]
+        "data": [["This is the best video ever!"], ["Subscribe to my channel!"]]
     }
 }

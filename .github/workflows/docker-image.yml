@@ -45,7 +45,7 @@ jobs:
         name: Build and test (model)
         uses: docker/build-push-action@v4
         with:
-          context: ./train_model
+          context: ./ci
           target: test
           cache-to: |
             type=gha,mode=max,scope=${{ github.repository }}
@@ -55,7 +55,7 @@ jobs:
         name: Build and push (model)
         uses: docker/build-push-action@v4
         with:
-          context: ./train_model
+          context: ./ci
           target: model
           cache-to: |
             type=gha,mode=max,scope=${{ github.repository }}
@@ -83,7 +83,7 @@ jobs:
         name: Build and push (serving-with-model)
         uses: docker/build-push-action@v4
         with:
-          context: ./train_model
+          context: ./ci
           platforms: linux/amd64,linux/arm/v8
           target: serving-with-model
           cache-to: |
