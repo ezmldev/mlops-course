@@ -46,4 +46,5 @@
     "python.testing.pytestEnabled": true,
     "workbench.colorTheme": "Visual Studio Dark",
     "terminal.integrated.experimentalImageSupport": true,
+    "python.defaultInterpreterPath": "/usr/local/python/current/bin/python",
 }
