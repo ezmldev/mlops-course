@@ -47,4 +47,9 @@
     "workbench.colorTheme": "Visual Studio Dark",
     "terminal.integrated.experimentalImageSupport": true,
     "python.defaultInterpreterPath": "/usr/local/python/current/bin/python",
+    "jupyter.kernels.filter": [
+        {
+          "path": "/usr/local/python/current/bin/python"
+        }
+      ]
 }

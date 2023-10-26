@@ -4,16 +4,6 @@ from pathlib import Path
 
 import pandas as pd
 
-ROOT_FOLDER = Path(__file__).parent.parent
-spam_data_file = Path(__file__).parent.parent / "data" / "comments.csv"
-if not spam_data_file.exists():
-    logging.error(f"Can't find {spam_data_file}")
-    raise SystemExit(1)
-
-df = pd.read_csv(spam_data_file)
-
-print(f"Loaded {len(df)} rows from {spam_data_file}")
-
 import mlflow
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier
@@ -21,6 +11,29 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
+import pandas as pd
+from mlflow.models import ModelSignature, infer_signature
+from mlflow.types.schema import ColSpec, Schema
+import os
+import shutil
+from warnings import simplefilter
+simplefilter(action="ignore", category=FutureWarning)
+
+if "MODEL_PATH" in os.environ:
+    model_path = os.environ["MODEL_PATH"]
+    spam_data_file = Path("/data/comments.csv")
+else:
+    model_path = Path(__file__).parent.parent / "models" / "spam_classifier_prod"
+    spam_data_file = Path(__file__).parent.parent / "data" / "comments.csv"
+
+if not spam_data_file.exists():
+    logging.error(f"Can't find {spam_data_file}")
+    raise SystemExit(1)
+
+df = pd.read_csv(spam_data_file)
+
+print(f"Loaded {len(df)} rows from {spam_data_file}")
+print(f"Trainig model...")
 
 # Initialize Random Forest model with best parameters
 best_params = {"max_depth": None, "min_samples_split": 2, "n_estimators": 200}
@@ -52,15 +65,12 @@ y_pred = pipe.predict(X_test)
 
 accuracy = float(accuracy_score(y_test, y_pred))
 
+print("Creating model artifact...")
+
 pip_requirements = [
     "scikit-learn==1.2.2",
     "mlflow==2.7.1",
 ]
-
-
-import pandas as pd
-from mlflow.models import ModelSignature, infer_signature
-from mlflow.types.schema import ColSpec, Schema
 
 # Option 1: Manually construct the signature object
 input_schema = Schema(
@@ -80,13 +90,7 @@ content_df = pd.DataFrame(
     }
 )
 
-import os
-import shutil
 
-if "MODEL_PATH" in os.environ:
-    model_path = os.environ["MODEL_PATH"]
-else:
-    model_path = ROOT_FOLDER / "models" / "spam_classifier_prod"
 shutil.rmtree(model_path, ignore_errors=True)
 
 mlflow.sklearn.save_model(
@@ -103,3 +107,5 @@ mlflow.sklearn.save_model(
         "accuracy": accuracy,
     },
 )
+
+print(f"Model saved to {model_path}")

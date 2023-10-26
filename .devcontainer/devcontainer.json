@@ -28,7 +28,7 @@
 	"forwardPorts": [5000],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip3 install --user -r dev-requirements.txt",
+	"postCreateCommand": "pip3 install --user -r requirements.txt",
 
 	// Configure tool-specific properties.
 	// "customizations": {},
@@ -38,5 +38,15 @@
 
      "remoteEnv": {
        "PYTHONPATH": "/workspaces/mlops-course"
-    }
+    },
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-toolsai.jupyter",
+				"ms-python.python",
+				"humao.rest-client"
+			]
+		}
+	}
 }

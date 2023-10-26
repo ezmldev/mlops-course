@@ -1,6 +1,5 @@
 import logging
 from pathlib import Path
-from warnings import simplefilter
 
 import pandas as pd
 
@@ -13,11 +12,7 @@ logging.root.setLevel(logging.INFO)
 pd.set_option("display.max_colwidth", None)
 pd.options.display.max_rows = 4000
 
-# Make sure we don't get any deprecation warnings from scikit-learn and mlflow
+# Make sure we don't get any deprecation warnings from mlflow
+from warnings import simplefilter
+
 simplefilter(action="ignore", category=FutureWarning)
-
-# Have a global variable for the project root directory
-PROJECT_ROOT_DIR = Path(__file__).parent.parent
-
-# Set up MLflow defaults for the course
-MLFLOW_EXPERIMENT_NAME = "Spam Detection"
