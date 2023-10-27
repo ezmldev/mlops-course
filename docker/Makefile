@@ -14,7 +14,8 @@ run-embedded: build
 	docker run -d -p 6000:5000 ghcr.io/$(GITHUB_REPOSITORY_OWNER)/ezserving-spam
 
 test:
-	curl   -H "content-type: application/json"   localhost:6000/invocations/   -d '{"content": "subscribe my channel"}'
+	curl -H "content-type: application/json"   localhost:6000/invocations/   -d '{"content": "subscribe my channel"}'
+	@echo
 
 clean:
 	docker rm -f $(shell docker ps -qa) || true

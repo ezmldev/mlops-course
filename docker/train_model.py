@@ -1,39 +1,38 @@
 import datetime
 import logging
+import os
+import shutil
 from pathlib import Path
-
-import pandas as pd
+from warnings import simplefilter
 
 import mlflow
+import pandas as pd
+from mlflow.models import ModelSignature, infer_signature
+from mlflow.types.schema import ColSpec, Schema
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
-import pandas as pd
-from mlflow.models import ModelSignature, infer_signature
-from mlflow.types.schema import ColSpec, Schema
-import os
-import shutil
-from warnings import simplefilter
+
 simplefilter(action="ignore", category=FutureWarning)
 
 if "MODEL_PATH" in os.environ:
     model_path = os.environ["MODEL_PATH"]
-    spam_data_file = Path("/data/comments.csv")
 else:
-    model_path = Path(__file__).parent.parent / "models" / "spam_classifier_prod"
-    spam_data_file = Path(__file__).parent.parent / "data" / "comments.csv"
+    model_path = (
+        Path(__file__).parent.parent / "models" / "spam_classifier_prod"
+    ).as_posix()
 
-if not spam_data_file.exists():
-    logging.error(f"Can't find {spam_data_file}")
-    raise SystemExit(1)
+if "DATA_URL" not in os.environ:
+    raise Exception("DATA_URL environment variable is not set")
+data_url = os.environ["DATA_URL"]
 
-df = pd.read_csv(spam_data_file)
+df = pd.read_csv(data_url)
 
-print(f"Loaded {len(df)} rows from {spam_data_file}")
-print(f"Trainig model...")
+print(f"Loaded {len(df)} rows from {data_url}")
+print("Trainig model...")
 
 # Initialize Random Forest model with best parameters
 best_params = {"max_depth": None, "min_samples_split": 2, "n_estimators": 200}

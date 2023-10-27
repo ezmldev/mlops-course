@@ -1,10 +1,9 @@
 FROM ghcr.io/ezmldev/mlflow:v2.6.0 as model-build
-COPY data /data
 COPY train_model.py /app/
 WORKDIR /app
 ENV MODEL_PATH=/app/model
+ENV DATA_URL=https://ez-public.s3.amazonaws.com/comments.csv
 RUN python train_model.py
-ENV MLFLOW_MODEL_URI=file:/app/model/
 
 FROM model-build as test
 COPY tests /app/tests

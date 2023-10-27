@@ -53,13 +53,9 @@ def load_dataset() -> pd.DataFrame:
     """
     Loads the spam dataset from the data directory.
     """
-    spam_data_file = Path(__file__).parent.parent / "data" / "comments.csv"
-    if not spam_data_file.exists():
-        logging.error(f"Can't find {spam_data_file}")
-        raise SystemExit(1)
+    spam_data_url = "https://ez-public.s3.amazonaws.com/comments.csv"
+    df = pd.read_csv(spam_data_url)
 
-    df = pd.read_csv(spam_data_file)
-
-    logging.info(f"Loaded {len(df)} rows from {spam_data_file}. First three records:")
+    logging.info("Loaded %s rows from %s. First three records:", len(df), spam_data_url)
     display(df.head(3))
     return df
