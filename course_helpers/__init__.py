@@ -16,3 +16,4 @@ pd.options.display.max_rows = 4000
 from warnings import simplefilter
 
 simplefilter(action="ignore", category=FutureWarning)
+simplefilter(action="ignore", category=UserWarning)
