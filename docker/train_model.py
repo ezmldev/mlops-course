@@ -68,7 +68,7 @@ print("Creating model artifact...")
 
 pip_requirements = [
     "scikit-learn==1.2.2",
-    "mlflow==2.7.1",
+    "mlflow==2.6.0",
 ]
 
 # Option 1: Manually construct the signature object
