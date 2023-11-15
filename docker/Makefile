@@ -8,7 +8,7 @@ volume:
 	docker run -v model:/model --rm ghcr.io/$(GITHUB_REPOSITORY_OWNER)/ezmodel-spam sh -c 'cp -r /volume-data/* /model'
 
 run-volume: build volume
-	docker run -d -p 6000:5000 -v model:/model ghcr.io/ezmldev/serving-api:1.2
+	docker run -d -p 6000:5000 -v model:/model ghcr.io/ezmldev/serving-api:v1.2
 
 run-embedded: build
 	docker run -d -p 6000:5000 ghcr.io/$(GITHUB_REPOSITORY_OWNER)/ezserving-spam
