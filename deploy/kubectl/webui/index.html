@@ -36,7 +36,7 @@ function check() {
   xhttp.open("POST", baseurl + "/invocations/", false);
   xhttp.setRequestHeader("Content-type", "application/json");  
   xhttp.send(JSON.stringify(
-    { "data": [document.getElementById("input").value] }
+    { "content": document.getElementById("input").value }
   ));
   document.getElementById("result").value = xhttp.responseText;
 }
