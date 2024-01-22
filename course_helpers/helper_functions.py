@@ -46,6 +46,11 @@ def mlflow_connect() -> Optional[mlflow.entities.experiment.Experiment]:
                 width=300,
             )
         )
+        print(
+            "Once you see MLFlow in your browser, come back and re-execute this cell. "
+            + "You will see the message 'OK - mlflow server is up and running.'",
+            file=sys.stderr,
+        )
         return None
 
 

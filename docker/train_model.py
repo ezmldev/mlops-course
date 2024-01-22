@@ -7,7 +7,7 @@ from warnings import simplefilter
 
 import mlflow
 import pandas as pd
-from mlflow.models import ModelSignature, infer_signature
+from mlflow.models import ModelSignature
 from mlflow.types.schema import ColSpec, Schema
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier
@@ -26,12 +26,17 @@ else:
     ).as_posix()
 
 if "DATA_URL" not in os.environ:
-    raise Exception("DATA_URL environment variable is not set")
-data_url = os.environ["DATA_URL"]
+    DATA_URL = "https://ez-public.s3.amazonaws.com/comments.csv"
+    logging.warning(
+        "DATA_URL environment variable is not set, using default: %s", DATA_URL
+    )
+else:
+    DATA_URL = os.environ["DATA_URL"]
+    logging.info("Using the following data URL: %s", DATA_URL)
 
-df = pd.read_csv(data_url)
+df = pd.read_csv(DATA_URL)
 
-print(f"Loaded {len(df)} rows from {data_url}")
+print(f"Loaded {len(df)} rows from {DATA_URL}")
 print("Trainig model...")
 
 # Initialize Random Forest model with best parameters

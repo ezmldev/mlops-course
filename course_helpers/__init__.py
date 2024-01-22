@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from warnings import simplefilter
 
 import pandas as pd
 
@@ -13,6 +14,5 @@ pd.set_option("display.max_colwidth", None)
 pd.options.display.max_rows = 4000
 
 # Make sure we don't get any deprecation warnings from mlflow
-from warnings import simplefilter
 
 simplefilter(action="ignore", category=FutureWarning)
